@@ -6,8 +6,16 @@ jobs:
     steps:
       - checkout
       - run: terraform fmt
+  python:
+    docker:
+      - image: python:3
+    steps:
+      - checkout
+      - run: pip install black
+      - run: black . --diff
 workflows:
   version: 2
   test:
     jobs:
       - terraform-fmt
+      - python
