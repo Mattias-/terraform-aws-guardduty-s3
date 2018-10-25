@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  terraform-fmt:
+    docker:
+      - image: hashicorp/terraform:ligth
+    steps:
+      - checkout
+      - run: terraform fmt
