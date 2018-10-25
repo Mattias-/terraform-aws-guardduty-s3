@@ -1,4 +1,5 @@
 # terraform-aws-guardduty-s3
+[![CircleCI](https://circleci.com/gh/Mattias-/terraform-aws-guardduty-s3.svg?style=svg)](https://circleci.com/gh/Mattias-/terraform-aws-guardduty-s3)
 
 This module writes [AWS GuardDuty](https://aws.amazon.com/guardduty/) findings to an AWS S3 bucket of your choice.
 There will be one file per finding.
