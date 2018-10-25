@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  terraform-fmt:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run: terraform fmt
+workflows:
+  version: 2
+  test:
+    jobs:
+      - terraform-fmt
