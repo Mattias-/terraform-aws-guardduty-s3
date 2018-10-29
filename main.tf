@@ -1,11 +1,3 @@
-provider "aws" {
-  region = "eu-west-1"
-}
-
-resource "aws_guardduty_detector" "main" {
-  enable = true
-}
-
 data "archive_file" "source" {
   type        = "zip"
   source_file = "${path.module}/guardduty_s3.py"
