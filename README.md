@@ -7,9 +7,23 @@ There will be one file per finding.
 Usage:
 
 ```hcl
-module "guardduty_s3" {
-  source = "github.com/Mattias-/terraform-aws-guardduty-s3"
+provider "aws" {
+  region = "eu-west-1"
+}
+
+resource "aws_guardduty_detector" "detector" {
+  enable = true
+}
+
+resource "aws_s3_bucket" "bucket" {
   bucket = "example"
+}
+
+module "guardduty_s3" {
+  source  = "github.com/Mattias-/terraform-aws-guardduty-s3"
+  bucket  = "${aws_s3_bucket.bucket.id}"
+  prefix  = ""
+  enabled = true
 }
 ```
 
@@ -27,29 +41,9 @@ $ aws s3 ls s3://example --recursive
 2018-10-25 22:26:45       1683 2018/10/25/32b3562e61fb553edf497f0585a3c57a-guardduty.txt
 2018-10-25 22:26:07       3486 2018/10/25/3cb3562e61f8cbfd9b9a0df251369a35-guardduty.txt
 2018-10-25 22:26:44       3039 2018/10/25/48b3562e61fabfe8c976b3e67d36e4af-guardduty.txt
-2018-10-25 22:26:07       1829 2018/10/25/5eb3562e61ff69b1c7b3cf8716c648c2-guardduty.txt
-2018-10-25 22:26:44       3223 2018/10/25/60b3562e61fc0515e4f0cd9b2ab9b89c-guardduty.txt
-2018-10-25 22:26:10       3488 2018/10/25/64b3562e61fa4a58d2096ce4ff9bb2f5-guardduty.txt
-2018-10-25 22:26:10       3349 2018/10/25/6cb3562e61f9021034008ef00735da3e-guardduty.txt
-2018-10-25 22:26:44       3464 2018/10/25/72b3562e61fda5241c43b20c8c56c363-guardduty.txt
-2018-10-25 22:26:44       1686 2018/10/25/74b3562e61fe8b44ac7f9a6580b22011-guardduty.txt
-2018-10-25 22:26:05       1836 2018/10/25/74b3562e6200f02bb69b5e68d008c69c-guardduty.txt
-2018-10-25 22:26:10       1896 2018/10/25/7cb3562e6201e944c6f1b3299f02def0-guardduty.txt
-2018-10-25 22:26:10       2457 2018/10/25/84b3562e61fcca982c523ba5647f9dda-guardduty.txt
-2018-10-25 22:26:10       1864 2018/10/25/92b3562e61f940b6e90bbdd31fdc74ed-guardduty.txt
-2018-10-25 22:26:07       2010 2018/10/25/96b3562e61fbd430d66f91e5a86008f3-guardduty.txt
-2018-10-25 22:26:44       1977 2018/10/25/98b3562e61fe11106fdcfac380def0b8-guardduty.txt
-2018-10-25 22:26:10       2982 2018/10/25/9ab3562e620115977e52461a75bebc76-guardduty.txt
-2018-10-25 22:26:10       3025 2018/10/25/9cb3562e61fcb7d471799e3e7edaabdb-guardduty.txt
-2018-10-25 22:26:44       2042 2018/10/25/b0b3562e61fd989d636866ebbff942f3-guardduty.txt
-2018-10-25 22:26:07       3515 2018/10/25/b4b3562e61f889beb39c569b016875a7-guardduty.txt
-2018-10-25 22:26:07       1943 2018/10/25/b4b3562e61fbc756a426357b7bf2b71c-guardduty.txt
-2018-10-25 22:26:44       3010 2018/10/25/b4b3562e6200a74ea6b9edfc82ee3373-guardduty.txt
-2018-10-25 22:26:10       3382 2018/10/25/b6b3562e61fd2d1c50dcc1104f00c489-guardduty.txt
-2018-10-25 22:26:07       3461 2018/10/25/c0b3562e620100e1536dc6fca1811701-guardduty.txt
-2018-10-25 22:26:44       3487 2018/10/25/c6b3562e61ff5e28e9156ed6ee9578ce-guardduty.txt
-2018-10-25 22:26:10       3465 2018/10/25/c8b3562e61f9f27e0eb4a066117e7bf6-guardduty.txt
-2018-10-25 22:26:06       2946 2018/10/25/c8b3562e6200183bb5a7c3cafaa3a152-guardduty.txt
-2018-10-25 22:26:10       1915 2018/10/25/d6b3562e61fc7d61ec15103234007f15-guardduty.txt
 
+$ aws s3 cp s3://example/2018/10/25/10b3562e61fab7a3a1135aa3c68b3644-guardduty.txt -
+{"schemaVersion": "2.0", "accountId": "000000000000", "region": "eu-west-1", "partition": "aws", "id": "10b3562e61fab7a3a1135aa3c68b3644", "arn": "arn:aws:guardduty:eu-west-1:000000000000:detector/3cb3562d0dd992501515c484383ee494/finding/10b3562e61fab7a3a1135aa3c68b3644", "type": "Trojan:EC2/DGADomainRequest.B", "resource": {"resourceType": "Instance", "instanceDetails": {"instanceId": "i-99999999", "instanceType": "m3.xlarge", "launchTime": "2016-03-11T21:23:34Z", "platform": null, "productCodes": [{"productCodeId": "GeneratedFindingProductCodeId", "productCodeType": "GeneratedFindingProductCodeType"}], "iamInstanceProfile": {"arn": "GeneratedFindingInstanceProfileArn", "id": "GeneratedFindingInstanceProfileId"}, "networkInterfaces": [{"networkInterfaceId": "eni-bfcffe88", "privateIpAddresses": [{"privateDnsName": "GeneratedFindingPrivateName", "privateIpAddress": "10.0.0.1"}], "subnetId": "GeneratedFindingSubnetId", "vpcId": "GeneratedFindingVPCId", "privateDnsName": "GeneratedFindingPrivateDnsName", "securityGroups": [{"groupName": "GeneratedFindingSecurityGroupName", "groupId": "GeneratedFindingSecurityId"}], "publicIp": "198.51.100.0", "ipv6Addresses": [], "publicDnsName": "GeneratedFindingPublicDNSName", "privateIpAddress": "10.0.0.1"}], "tags": [{"value": "GeneratedFindingInstaceValue1", "key": "GeneratedFindingInstaceTag1"}, {"value": "GeneratedFindingInstaceTagValue2", "key": "GeneratedFindingInstaceTag2"}, {"value": "GeneratedFindingInstaceTagValue3", "key": "GeneratedFindingInstaceTag3"}, {"value": "GeneratedFindingInstaceTagValue4", "key": "GeneratedFindingInstaceTag4"}, {"value": "GeneratedFindingInstaceTagValue5", "key": "GeneratedFindingInstaceTag5"}, {"value": "GeneratedFindingInstaceTagValue6", "key": "GeneratedFindingInstaceTag6"}, {"value": "GeneratedFindingInstaceTagValue7", "key": "GeneratedFindingInstaceTag7"}, {"value": "GeneratedFindingInstaceTagValue8", "key": "GeneratedFindingInstaceTag8"}, {"value": "GeneratedFindingInstaceTagValue9", "key": "GeneratedFindingInstaceTag9"}], "instanceState": "running", "availabilityZone": "GeneratedFindingInstaceAvailabilityZone", "imageId": "ami-99999999", "imageDescription": "GeneratedFindingInstaceImageDescription"}}, "service": {"serviceName": "guardduty", "detectorId": "3cb3562d0dd992501515c484383ee494", "action": {"actionType": "DNS_REQUEST", "dnsRequestAction": {"domain": "GeneratedFindingDomainName", "protocol": "0", "blocked": true}}, "resourceRole": "ACTOR", "additionalInfo": {"domain": "GeneratedFindingAdditionalDomainName", "sample": true}, "eventFirstSeen": "2018-10-25T17:54:12.597Z", "eventLastSeen": "2018-10-25T20:22:25.471Z", "archived": false, "count": 5}, "severity": 8, "createdAt": "2018-10-25T17:54:12.597Z", "updatedAt": "2018-10-25T20:22:25.471Z", "title": "DGA domain name queried by EC2 instance i-99999999.", "description": "EC2 instance i-99999999 is querying algorithmically generated domains. Such domains are commonly used by malware and could be an indication of a compromised EC2 instance."}
 ```
+
+In the bucket you will now find that one object is created per finding. The finding format can be found [here](https://docs.aws.amazon.com/guardduty/latest/ug/get-findings.html#get-findings-response-syntax).
