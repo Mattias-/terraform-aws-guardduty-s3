@@ -32,7 +32,7 @@ def lambda_handler(event, context):
 
 def _gen_key(finding_id, prefix=""):
     now = datetime.datetime.now()
-    key = "{p}/{d.year}/{d.month}/{d.day}/{f_id}-guardduty.txt".format(
+    key = "{p}/{d.year}/{d.month}/{d.day}/{f_id}-guardduty.json".format(
         d=now, p=prefix, f_id=finding_id
     )
     # Keys should not start with /
